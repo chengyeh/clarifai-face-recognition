@@ -8,3 +8,8 @@ body {
 button {
 	cursor: pointer;
 }
+
+.interact {
+	position: relative;
+	z-index: 1;
+}
