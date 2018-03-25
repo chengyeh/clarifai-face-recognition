@@ -8,6 +8,7 @@ import Rank from '../components/Rank/Rank';
 import ImgLinkForm from '../components/ImgLinkForm/ImgLinkForm';
 import FaceDetection from '../components/FaceDetection/FaceDetection';
 import Signin from '../components/Signin/Signin';
+import Signup from '../components/Signup/Signup';
 
 const app = new Clarifai.App({
  apiKey: 'abb52e751e454024a5dc3cf454ebb5b3'
@@ -197,17 +198,22 @@ onRouteChange = (route) => {
         <NavBar onRouteChange={this.onRouteChange} />
         {
           route === 'signin' ?
-          <Signin onRouteChange={this.onRouteChange} />
+            <Signin onRouteChange={this.onRouteChange} />
           :
-          <div>
-            <Logo />
-            <Rank />
-            <ImgLinkForm 
-              onInputChange={this.onInputChange} 
-              onEnterClick={this.onEnterClick}
-              onButtonClick={this.onButtonClick}
-            />
-          </div>
+            (
+              route === 'home' ?
+                <div>
+                  <Logo />
+                  <Rank />
+                  <ImgLinkForm 
+                    onInputChange={this.onInputChange} 
+                    onEnterClick={this.onEnterClick}
+                    onButtonClick={this.onButtonClick}
+                  />
+                </div>
+              :
+                <Signup onRouteChange={this.onRouteChange}/>
+            )
         } 
         <FaceDetection imageUrl={imageUrl} boundingBoxes={regionInfo}/>
       </div>
