@@ -127,8 +127,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      input: 'init',
-      imageUrl: 'init',
+      input: '',
+      imageUrl: '',
       regionInfo: []
     }
   }
