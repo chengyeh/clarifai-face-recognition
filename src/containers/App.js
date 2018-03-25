@@ -7,6 +7,7 @@ import Logo from '../components/Logo/Logo';
 import Rank from '../components/Rank/Rank';
 import ImgLinkForm from '../components/ImgLinkForm/ImgLinkForm';
 import FaceDetection from '../components/FaceDetection/FaceDetection';
+import Signin from '../components/Signin/Signin';
 
 const app = new Clarifai.App({
  apiKey: 'abb52e751e454024a5dc3cf454ebb5b3'
@@ -129,7 +130,8 @@ class App extends Component {
     this.state = {
       input: '',
       imageUrl: '',
-      regionInfo: []
+      regionInfo: [],
+      route: 'signin'
     }
   }
 
@@ -183,19 +185,30 @@ class App extends Component {
     this.setState({regionInfo: box});
   }; 
 
+onRouteChange = (route) => {
+  this.setState({route});
+}
+
   render() {
-    const { imageUrl, regionInfo} = this.state;
+    const { imageUrl, regionInfo, route } = this.state;
     return (
       <div className="App">
         <Particles  className='particles' params={particlescConfig} />
-        <NavBar />
-        <Logo />
-        <Rank />
-        <ImgLinkForm 
-          onInputChange={this.onInputChange} 
-          onEnterClick={this.onEnterClick}
-          onButtonClick={this.onButtonClick}
-        /> 
+        <NavBar onRouteChange={this.onRouteChange} />
+        {
+          route === 'signin' ?
+          <Signin onRouteChange={this.onRouteChange} />
+          :
+          <div>
+            <Logo />
+            <Rank />
+            <ImgLinkForm 
+              onInputChange={this.onInputChange} 
+              onEnterClick={this.onEnterClick}
+              onButtonClick={this.onButtonClick}
+            />
+          </div>
+        } 
         <FaceDetection imageUrl={imageUrl} boundingBoxes={regionInfo}/>
       </div>
     );
