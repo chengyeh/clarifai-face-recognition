@@ -161,13 +161,36 @@ class App extends Component {
     this.setState({input: event.target.value});
   };
 
+  processImage = () => {
+    this.setState({imageUrl: this.state.input}, () => {
+      app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
+      .then(response => {
+        if(response) {
+          fetch('http://localhost:3001/image', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              id: this.state.user.id
+            })
+          })
+            .then(response => response.json())
+            .then(user => {
+              this.setState({user: {
+                ...this.state.user,
+                entries: user.entries
+              }})
+            })
+        }
+        this.setRegionInfo(this.calculateRegions(response))
+        this.setState({input: ''});
+      })
+      .catch(err => console.log(err))
+    });
+  };
+
   onEnterClick = (event) => {
     if(event.key === 'Enter') {
-      this.setState({imageUrl: this.state.input}, () => {
-        app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
-        .then(response => this.setRegionInfo(this.calculateRegions(response)))
-        .catch(err => console.log(err)) 
-      });
+      this.processImage();
       event.target.value = '';
     }
   };
@@ -175,11 +198,7 @@ class App extends Component {
   onButtonClick = (event) => {
     //Invoke the second function as a callback to setState, as setState happens asynchronously
     const userInput = document.querySelector('input');
-    this.setState({imageUrl: this.state.input}, () => {
-      app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.imageUrl)
-      .then(response => this.setRegionInfo(this.calculateRegions(response)))
-      .catch(err => console.log(err))
-    });
+    this.processImage();
     userInput.value = '';
   };
 
