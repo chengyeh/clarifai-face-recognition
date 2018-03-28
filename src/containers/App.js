@@ -133,9 +133,29 @@ class App extends Component {
       imageUrl: '',
       regionInfo: [],
       route: 'signin',
-      isSignedIn: false
+      isSignedIn: false,
+      user: {
+        id: 0,
+        name: '',
+        email: '',
+        entries: 0,
+        addedOn: '',
+      }
     }
   }
+
+  loadUser = (data) => {
+    const { id, name, email, entries, addedOn } = data;
+    this.setState({
+      user: {
+        id,
+        name,
+        email,
+        entries,
+        addedOn,
+      }
+    });
+  };
 
   onInputChange = (event) => {
     this.setState({input: event.target.value});
@@ -219,10 +239,10 @@ onRouteChange = (route) => {
                   />
                 </div>
               :
-                <Signup onRouteChange={this.onRouteChange}/>
+                <Signup onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
             )
         } 
-        <FaceDetection imageUrl={imageUrl} boundingBoxes={regionInfo}/>
+        <FaceDetection imageUrl={imageUrl} boundingBoxes={regionInfo} />
       </div>
     );
   }
