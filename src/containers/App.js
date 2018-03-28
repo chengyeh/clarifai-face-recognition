@@ -218,7 +218,7 @@ onRouteChange = (route) => {
 }
 
   render() {
-    const { imageUrl, regionInfo, route, isSignedIn } = this.state;
+    const { imageUrl, regionInfo, route, isSignedIn, user } = this.state;
     return (
       <div className="App">
         <Particles  className='particles' params={particlescConfig} />
@@ -231,7 +231,7 @@ onRouteChange = (route) => {
               route === 'home' ?
                 <div>
                   <Logo />
-                  <Rank />
+                  <Rank name={user.name} entries={user.entries} />
                   <ImgLinkForm 
                     onInputChange={this.onInputChange} 
                     onEnterClick={this.onEnterClick}
