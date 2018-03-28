@@ -225,7 +225,7 @@ onRouteChange = (route) => {
         <NavBar isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
         {
           route === 'signin' ?
-            <Signin onRouteChange={this.onRouteChange} />
+            <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
           :
             (
               route === 'home' ?
