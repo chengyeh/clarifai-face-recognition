@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
-import './App.css';
 import NavBar from '../components/NavBar/NavBar';
 import Logo from '../components/Logo/Logo';
 import Rank from '../components/Rank/Rank';
@@ -9,6 +8,7 @@ import ImgLinkForm from '../components/ImgLinkForm/ImgLinkForm';
 import FaceDetection from '../components/FaceDetection/FaceDetection';
 import Signin from '../components/Signin/Signin';
 import Signup from '../components/Signup/Signup';
+import './App.css';
 
 const app = new Clarifai.App({
  apiKey: 'abb52e751e454024a5dc3cf454ebb5b3'
@@ -125,34 +125,36 @@ const particlescConfig = {
   "retina_detect": true
 }
 
+const initialState = {
+  input: '',
+  imageUrl: '',
+  regionInfo: [],
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: 0,
+    name: '',
+    email: '',
+    entries: 0,
+    addedOn: '',
+  }  
+};
+
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      regionInfo: [],
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: 0,
-        name: '',
-        email: '',
-        entries: 0,
-        addedOn: '',
-      }
-    }
+    this.state = initialState;
   }
 
   loadUser = (data) => {
-    const { id, name, email, entries, addedOn } = data;
+    const { id, name, email, entries, addedon } = data;
     this.setState({
       user: {
         id,
         name,
         email,
         entries,
-        addedOn,
+        addedOn: addedon,
       }
     });
   };
@@ -174,10 +176,10 @@ class App extends Component {
             })
           })
             .then(response => response.json())
-            .then(user => {
+            .then(entries => {
               this.setState({user: {
                 ...this.state.user,
-                entries: user.entries
+                entries
               }})
             })
         }
@@ -230,13 +232,13 @@ onRouteChange = (route) => {
   if(route === 'home') {
     this.setState({isSignedIn: true});
   } else {
-    this.setState({isSignedIn: false});
+    this.setState(initialState);
   }
-
   this.setState({route});
 }
 
   render() {
+    console.log(this.state);
     const { imageUrl, regionInfo, route, isSignedIn, user } = this.state;
     return (
       <div className="App">
