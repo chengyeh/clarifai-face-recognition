@@ -33,12 +33,13 @@ class Signup extends Component {
 			})
 		})
 			.then(response => response.json())
-			.then(user => {
-				if(user) {
-					this.props.loadUser(user);
+			.then(data => {
+				if(data.id) {
+					this.props.loadUser(data);
 					this.props.onRouteChange('home');
 				}
 			})
+			.catch(console.log);
 	};
 
 	render() {

@@ -182,11 +182,12 @@ class App extends Component {
                 entries
               }})
             })
+            .catch(console.log);
         }
         this.setRegionInfo(this.calculateRegions(response))
         this.setState({input: ''});
       })
-      .catch(err => console.log(err))
+      .catch(console.log);
     });
   };
 
@@ -238,7 +239,6 @@ onRouteChange = (route) => {
 }
 
   render() {
-    console.log(this.state);
     const { imageUrl, regionInfo, route, isSignedIn, user } = this.state;
     return (
       <div className="App">
