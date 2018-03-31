@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import FormErrors from '../FormErrors/FormErrors'
 
 class Signup extends Component {
 	constructor(props) {
@@ -6,20 +7,58 @@ class Signup extends Component {
 		this.state = {
 			name: '',
 			email: '',
-			password: ''
+			password: '',
+			formErrors: {name: '', email: '', password: ''},
+			nameValid: false,
+		    emailValid: false,
+		    passwordValid: false,
+		    formValid: false
 		}
 	}
 
-	onNameChange = (event) => {
-		this.setState({name: event.target.value});
+	handleUserInput = (event) => {
+		const name = event.target.name;
+		const value = event.target.value;
+		this.setState({[name]: value}, () => {
+			this.validateField(name, value);
+		});
 	};
 
-	onEmailChange = (event) => {
-		this.setState({email: event.target.value});
+	validateField = (fieldName, value) => {
+		let fieldValidationErrors = this.state.formErrors;
+		let nameValid = this.state.nameValid;
+  		let emailValid = this.state.emailValid;
+  		let passwordValid = this.state.passwordValid;
+
+  		switch(fieldName) {
+  			case 'name':
+  				nameValid = value.match(/^[a-z ,.'-]+$/i);
+  				fieldValidationErrors.name = nameValid ? '' : ' is invalid';
+  				break;
+  			case 'email':
+  				emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+  				fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+  				break;
+  			case 'password':
+  				passwordValid = value.length >= 6;
+  				fieldValidationErrors.password = passwordValid ? '': ' must be at least 6 characters';
+  				break;
+  			default:
+  				break;
+  		}
+
+  		this.setState({
+  			formErrors: fieldValidationErrors,
+  			nameValid,
+  			emailValid,
+  			passwordValid
+  		}, this.validateForm)
 	};
 
-	onPasswordChange = (event) => {
-		this.setState({password: event.target.value});
+	validateForm = () => {
+		this.setState({
+			formValid: this.state.nameValid && this.state.emailValid && this.state.passwordValid
+		});
 	};
 
 	onSubmit = (event) => {
@@ -43,12 +82,22 @@ class Signup extends Component {
 	};
 
 	render() {
+		console.log(this.state);
+		const { name, email, password} = this.state.formErrors;
 		return(
 			<article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center interact">
 				<main className="pa4 black-80">
 				  <div className="measure">
 				    <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
 				      <legend className="f1 fw6 ph0 mh0">Sign Up</legend>
+				      {
+				      	(name || email || password) ?
+				      		<div className="f6 ba b--black-10 mw5">
+								<FormErrors formErrors={this.state.formErrors} />
+					  		</div>
+					  	:
+					  	<div></div>
+				      }
 				      <div className="mt3">
 				        <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
 				        <input 
@@ -56,17 +105,17 @@ class Signup extends Component {
 				        	type="text" 
 				        	name="name"  
 				        	id="name" 
-				        	onChange={this.onNameChange}
+				        	onChange={this.handleUserInput}
 				        />
 				      </div>
 				      <div className="mt3">
-				        <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
+				        <label className="db fw6 lh-copy f6" htmlFor="email">Email</label>
 				        <input 
 				        	className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
 				        	type="email" 
-				        	name="email-address"  
-				        	id="email-address" 
-				        	onChange={this.onEmailChange}
+				        	name="email"  
+				        	id="email" 
+				        	onChange={this.handleUserInput}
 				        />
 				      </div>
 				      <div className="mv3">
@@ -76,17 +125,19 @@ class Signup extends Component {
 				        	type="password" 
 				        	name="password"  
 				        	id="password" 
-				        	onChange={this.onPasswordChange}
+				        	onChange={this.handleUserInput}
 				        />
 				      </div>
 				    </fieldset>
-				    <div className="">
-				      <input 
-				      	className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
-				      	type="submit" 
-				      	value="Sign up" 
-				      	onClick={this.onSubmit} 
-				      />
+				    <div>
+				   		<button 
+					    	className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
+					      	type="submit" 
+					      	onClick={this.onSubmit} 
+					      	disabled={!this.state.formValid}
+				      	>
+				      		Sign up
+				      </button>
 				    </div>
 				  </div>
 				</main>
