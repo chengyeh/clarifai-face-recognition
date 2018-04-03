@@ -6,7 +6,7 @@ const NavBar = ({ isSignedIn, onRouteChange }) => {
 			<nav style={{display: 'flex', justifyContent: 'flex-end'}}>
 				<p 
 				onClick={() => {onRouteChange('signin')}}
-				className='f3 pa3 link underline dim white hover-washed-red pointer interact' 
+				className='f3 pa3 link underline dim black hover-washed-red pointer interact' 
 				>
 					Sign Out
 				</p>
@@ -17,13 +17,13 @@ const NavBar = ({ isSignedIn, onRouteChange }) => {
 			<nav style={{display: 'flex', justifyContent: 'flex-end'}}>
 				<p 
 				onClick={() => {onRouteChange('signin')}}
-				className='f3 pa3 link underline dim white hover-washed-red pointer interact' 
+				className='f3 pa3 link underline dim black hover-washed-red pointer interact' 
 				>
 					Sign In
 				</p>
 				<p 
 				onClick={() => {onRouteChange('signup')}}
-				className='f3 pa3 link underline dim white hover-washed-red pointer interact' 
+				className='f3 pa3 link underline dim black hover-washed-red pointer interact' 
 				>
 					Sign Up
 				</p>
