@@ -5,7 +5,7 @@ const ImgLinkForm = ({ onInputChange, onEnterClick, onButtonClick }) => {
 	return(
 		<div>
 			<p className='f3 white'>
-				{'This web app will detect the faces in your picture, give it a try!'}
+				{'This app will detect the faces in the picture, give it a try!'}
 			</p>
 			<div className='center'>
 				<div className='center form pa4 br3 shadow-5 interact'>
@@ -18,6 +18,8 @@ const ImgLinkForm = ({ onInputChange, onEnterClick, onButtonClick }) => {
 					</button>
 				</div>
 			</div>
+			<p>{'Powered by Clarifai Object Recognition Engine'}</p>
+			<p>{'Logo created by Joe Mortell from Noun Project'}</p>
 		</div>
 	);
 };

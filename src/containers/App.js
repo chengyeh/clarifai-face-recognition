@@ -240,7 +240,6 @@ toggleSignIn = (ifSignedIn) => {
 }
 
   render() {
-    console.log(this.state)
     const { imageUrl, regionInfo, isSignedIn, user } = this.state;
     return (
       <div className="App">

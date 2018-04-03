@@ -5,7 +5,7 @@ const FaceDetection = ({ imageUrl, boundingBoxes }) => {
 	const image = imageUrl !== '' ?
 					<img id='inputImage' alt='' src={imageUrl} width='500px' height='auto' />
 					: [];
-//<img id='inputImage' alt='' src={imageUrl} width='500px' height='auto' />
+
 	const rows = boundingBoxes.length > 0 ?
 					(boundingBoxes.map((box, i) => {
 						const { topRow, leftCol, bottomRow, rightCol } = box;
