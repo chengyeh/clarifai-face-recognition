@@ -52,7 +52,7 @@ class Signin extends Component {
 	};
 
 	onSubmit = (event) => {
-		fetch('http://localhost:3001/signin', {
+		fetch('https://clarifai-face-recognition-api.herokuapp.com/signin', {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({

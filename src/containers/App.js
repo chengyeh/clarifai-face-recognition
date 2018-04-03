@@ -160,7 +160,7 @@ class App extends Component {
 
   processImage = () => {
     this.setState({imageUrl: this.state.input}, () => {
-      fetch('http://localhost:3001/callapi', {
+      fetch('https://clarifai-face-recognition-api.herokuapp.com/callapi', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -169,8 +169,8 @@ class App extends Component {
       })
       .then(response => response.json())
       .then(response => {
-        if(response) {
-          fetch('http://localhost:3001/image', {
+        if(response.outputs) {
+          fetch('https://clarifai-face-recognition-api.herokuapp.com/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -185,8 +185,8 @@ class App extends Component {
               }})
             })
             .catch(console.log);
-        }
-        this.setRegionInfo(this.calculateRegions(response))
+            this.setRegionInfo(this.calculateRegions(response));
+        }       
         this.setState({input: ''});
       })
       .catch(console.log);
