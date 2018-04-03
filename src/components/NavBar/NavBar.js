@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const NavBar = ({ isSignedIn, onRouteChange }) => {
+const NavBar = ({ isSignedIn, toggleSignIn }) => {
 	if(isSignedIn) {
 		return(
 			<nav style={{display: 'flex', justifyContent: 'flex-end'}}>
 				<p 
-				onClick={() => {onRouteChange('signin')}}
+				onClick={() => {toggleSignIn(false)}}
 				className='f3 pa3 link underline dim black hover-washed-red pointer interact' 
 				>
 					Sign Out
@@ -15,18 +16,16 @@ const NavBar = ({ isSignedIn, onRouteChange }) => {
 	} else {
 		return(
 			<nav style={{display: 'flex', justifyContent: 'flex-end'}}>
-				<p 
-				onClick={() => {onRouteChange('signin')}}
-				className='f3 pa3 link underline dim black hover-washed-red pointer interact' 
-				>
-					Sign In
-				</p>
-				<p 
-				onClick={() => {onRouteChange('signup')}}
-				className='f3 pa3 link underline dim black hover-washed-red pointer interact' 
-				>
-					Sign Up
-				</p>
+				<Link to='/'>
+					<p className='f3 pa3 link underline dim black hover-washed-red pointer interact'>
+						Sign In
+					</p>
+				</Link>
+				<Link to='/signup'>
+					<p className='f3 pa3 link underline dim black hover-washed-red pointer interact'>
+						Sign Up
+					</p>
+				</Link>
 			</nav>
 		);
 	}

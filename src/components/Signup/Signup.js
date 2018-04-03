@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import FormErrors from '../FormErrors/FormErrors'
 
 class Signup extends Component {
@@ -75,7 +76,7 @@ class Signup extends Component {
 			.then(data => {
 				if(data.id) {
 					this.props.loadUser(data);
-					this.props.onRouteChange('home');
+					this.props.toggleSignIn(true);
 				}
 			})
 			.catch(console.log);
@@ -83,6 +84,11 @@ class Signup extends Component {
 
 	render() {
 		const { name, email, password} = this.state.formErrors;
+
+		if(this.props.isSignedIn) {
+			return <Redirect to='/profile' />;
+		}
+
 		return(
 			<article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center interact">
 				<main className="pa4 black-80">

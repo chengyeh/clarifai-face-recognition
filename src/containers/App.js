@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Particles from 'react-particles-js';
 import NavBar from '../components/NavBar/NavBar';
 import Logo from '../components/Logo/Logo';
@@ -124,7 +125,6 @@ const initialState = {
   input: '',
   imageUrl: '',
   regionInfo: [],
-  route: 'signin',
   isSignedIn: false,
   user: {
     id: 0,
@@ -231,40 +231,44 @@ class App extends Component {
     this.setState({regionInfo: box});
   }; 
 
-onRouteChange = (route) => {
-  if(route === 'home') {
+toggleSignIn = (ifSignedIn) => {
+  if(ifSignedIn) {
     this.setState({isSignedIn: true});
   } else {
     this.setState(initialState);
   }
-  this.setState({route});
 }
 
   render() {
-    const { imageUrl, regionInfo, route, isSignedIn, user } = this.state;
+    console.log(this.state)
+    const { imageUrl, regionInfo, isSignedIn, user } = this.state;
     return (
       <div className="App">
         <Particles  className='particles' params={particlescConfig} />
-        <NavBar isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
-        {
-          route === 'signin' ?
-            <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
-          :
-            (
-              route === 'home' ?
-                <div>
-                  <Logo />
-                  <Rank name={user.name} entries={user.entries} />
-                  <ImgLinkForm 
-                    onInputChange={this.onInputChange} 
-                    onEnterClick={this.onEnterClick}
-                    onButtonClick={this.onButtonClick}
-                  />
-                </div>
-              :
-                <Signup onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
+        <NavBar isSignedIn={isSignedIn} toggleSignIn={this.toggleSignIn} />
+        <Switch>
+          <Route exact path='/' render={(props) => (
+            <Signin toggleSignIn={this.toggleSignIn} loadUser={this.loadUser} isSignedIn={isSignedIn} />
+          )} />
+          <Route path='/signup' render={(props) => (
+            <Signup toggleSignIn={this.toggleSignIn} loadUser={this.loadUser} isSignedIn={isSignedIn} />
+          )} />
+          <Route path='/profile' render={(props) => 
+            isSignedIn ? (
+              <div>
+                <Logo />
+                <Rank name={user.name} entries={user.entries} />
+                <ImgLinkForm 
+                  onInputChange={this.onInputChange} 
+                  onEnterClick={this.onEnterClick}
+                  onButtonClick={this.onButtonClick}
+                />
+              </div>
+            ) : (
+              <Redirect to='/' />
             )
-        } 
+          } />
+        </Switch>
         <FaceDetection imageUrl={imageUrl} boundingBoxes={regionInfo} />
       </div>
     );
