@@ -11,14 +11,15 @@ class Signin extends Component {
 			formErrors: {email: '', password: ''},
 		    emailValid: false,
 		    passwordValid: false,
-		    formValid: false
+		    formValid: false,
+		    serverError: ''
 		}
 	}
 
 	handleUserInput = (event) => {
 		const name = event.target.name;
 		const value = event.target.value;
-		this.setState({[name]: value}, () => {
+		this.setState({[name]: value, serverError: ''}, () => {
 			this.validateField(name, value);
 		});
 	};
@@ -66,6 +67,8 @@ class Signin extends Component {
 				if(user.id) {
 					this.props.loadUser(user);
 					this.props.toggleSignIn(true);
+				} else {
+					this.setState({serverError: 'Invalid emaill address or password.'})
 				}
 			})
 			.catch(console.log);
@@ -73,7 +76,8 @@ class Signin extends Component {
 
 	render() {
 		const { isSignedIn } = this.props;
-		const { email, password} = this.state.formErrors;
+		const { email, password } = this.state.formErrors;
+		const { serverError } = this.state;
 
 		if(isSignedIn) {
 			return <Redirect to='/profile' />;
@@ -86,9 +90,9 @@ class Signin extends Component {
 				    <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
 				      <legend className="f1 fw6 ph0 mh0">Sign In</legend>
 				      {
-				      	(email || password) ?
+				      	(email || password || serverError) ?
 				      		<div className="f6 ba b--black-10 mw5">
-								<FormErrors formErrors={this.state.formErrors} />
+								<FormErrors formErrors={this.state.formErrors} serverError={this.state.serverError} />
 					  		</div>
 					  	:
 					  	<div></div>

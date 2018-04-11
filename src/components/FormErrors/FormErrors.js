@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FormErrors = ({ formErrors }) => {
+const FormErrors = ({ formErrors, serverError }) => {
 	return (
 		<div>
 		    {
@@ -13,6 +13,9 @@ const FormErrors = ({ formErrors }) => {
 			        return '';
 			      }
 		    	})
+			}
+			{
+				serverError ? <p>{serverError}</p> : ''
 			}
   		</div>
 	);
